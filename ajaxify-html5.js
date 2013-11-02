@@ -161,13 +161,10 @@
 					
 					// Add the scripts
 					$scripts.each(function(){
-						var $script = $(this), scriptText = $script.html(), scriptNode = document.createElement('script');
-						if ( $script.attr('src') ) {
-							if ( !$script[0].async ) { scriptNode.async = false; }
-							scriptNode.src = $script.attr('src');
-						}
-    						scriptNode.appendChild(document.createTextNode(scriptText));
-						contentNode.appendChild(scriptNode);
+						var $script = $(this), scriptNode = $(this)[0].outerHTML
+							.replace('<div class="document-script"', '<script')
+							.replace('div>', 'script>');
+						$(scriptNode).appendTo(contentNode);
 					});
 
 					// Complete the change

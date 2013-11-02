@@ -1,7 +1,7 @@
 // Ajaxify
 // v1.0.1 - 30 September, 2012
 // https://github.com/browserstate/ajaxify
-(function(window,undefined){
+(function(window,options){
 	
 	// Prepare our Variables
 	var
@@ -16,17 +16,21 @@
 
 	// Wait for Document
 	$(function(){
+		options = options || {};
 		// Prepare Variables
 		var
 			/* Application Specific Variables */
-			contentSelector = '#content,article:first,.article:first,.post:first',
+			contentSelector = options.contentSelector || '#content,article:first,.article:first,.post:first',
+			menuSelector = options.menuSelector || '#menu,#nav,nav:first,.nav:first',
+			activeClass = options.activeClass || 'active selected current youarehere',
+			activeSelector = options.activeSelector || '.active,.selected,.current,.youarehere',
+			menuChildrenSelector = options.menuChildrenSelector || '> li,> ul > li',
+			completedEventName = 'statechangecomplete',			
+			
 			$content = $(contentSelector).filter(':first'),
 			contentNode = $content.get(0),
-			$menu = $('#menu,#nav,nav:first,.nav:first').filter(':first'),
-			activeClass = 'active selected current youarehere',
-			activeSelector = '.active,.selected,.current,.youarehere',
-			menuChildrenSelector = '> li,> ul > li',
-			completedEventName = 'statechangecomplete',
+			$menu = $(menuSelector).filter(':first'),
+
 			/* Application Generic Variables */
 			$window = $(window),
 			$body = $(document.body),
@@ -157,7 +161,7 @@
 					
 					// Add the scripts
 					$scripts.each(function(){
-						var $script = $(this), scriptText = $script.text(), scriptNode = document.createElement('script');
+						var $script = $(this), scriptText = $script.html(), scriptNode = document.createElement('script');
 						if ( $script.attr('src') ) {
 							if ( !$script[0].async ) { scriptNode.async = false; }
 							scriptNode.src = $script.attr('src');
@@ -192,4 +196,4 @@
 
 	}); // end onDomLoad
 
-})(window); // end closure
+})(window, {/*options to configure this plugin.*/}); // end closure
